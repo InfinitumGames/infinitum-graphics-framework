@@ -25,6 +25,8 @@ nav:
           - Performance Controller: architecture/performance-controller.md
           - Adaptive Quality Manager: architecture/adaptive-quality-manager.md
       - Loading & Streaming: architecture/loading-streaming.md
+  - Pesquisa:
+      - Viabilidade do Performance Engine no OMSI 2: research/omsi-performance-viability.md
   - Desenvolvimento:
       - Devlog: development/devlog.md
       - Benchmarks: development/benchmarks.md
