@@ -19,7 +19,11 @@ nav:
       - Visão geral: architecture/overview.md
       - Pipeline gráfico: architecture/graphics-pipeline.md
       - Neural Rendering: architecture/neural-rendering.md
-      - Performance Engine: architecture/performance-engine.md
+      - Performance Engine:
+          - Architecture v0.1: architecture/performance-engine.md
+          - Telemetry Engine: architecture/telemetry-engine.md
+          - Performance Controller: architecture/performance-controller.md
+          - Adaptive Quality Manager: architecture/adaptive-quality-manager.md
       - Loading & Streaming: architecture/loading-streaming.md
   - Desenvolvimento:
       - Devlog: development/devlog.md
