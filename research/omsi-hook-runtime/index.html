@@ -1,0 +1,2132 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Modernização gráfica, desempenho e infraestrutura para OMSI 2">
+      
+      
+      
+      
+        <link rel="prev" href="../omsi-performance-viability/">
+      
+      
+        <link rel="next" href="../runtime-performance-controls/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>OmsiHook e controle runtime - Infinitum Graphics Framework</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pesquisa-omsihook-e-controle-runtime-do-omsi-2" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Infinitum Graphics Framework" class="md-header__button md-logo" aria-label="Infinitum Graphics Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Infinitum Graphics Framework
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OmsiHook e controle runtime
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/InfinitumGames/infinitum-graphics-framework" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    InfinitumGames/infinitum-graphics-framework
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Infinitum Graphics Framework" class="md-nav__button md-logo" aria-label="Infinitum Graphics Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Infinitum Graphics Framework
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/InfinitumGames/infinitum-graphics-framework" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    InfinitumGames/infinitum-graphics-framework
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../current-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estado atual
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arquitetura
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/graphics-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline gráfico
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/neural-rendering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neural Rendering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Engine
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Performance Engine
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/performance-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture v0.1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/telemetry-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Telemetry Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/performance-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adaptive-quality-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptive Quality Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/loading-streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loading & Streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pesquisa
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pesquisa
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../omsi-performance-viability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Viabilidade do Performance Engine no OMSI 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OmsiHook e controle runtime
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OmsiHook e controle runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao-rapida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão rápida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-do-omsihook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura do OmsiHook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#globais-ja-expostos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Globais já expostos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Globais já expostos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relevancia-para-o-infinitum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relevância para o Infinitum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estruturas-do-mapa-relevantes-para-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estruturas do mapa relevantes para performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estruturas do mapa relevantes para performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-tile-reduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dynamic Tile Reduction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading / Streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-cada-tile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura de cada tile
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura de cada tile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#valor-para-telemetria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valor para telemetria
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trafego-e-pedestres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tráfego e pedestres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texture-manager-e-material-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Texture Manager e Material Manager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3d-e-metodos-remotos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D3D e métodos remotos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibilidade-e-arquitetura-de-processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibilidade e arquitetura de processo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencia-ou-referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependência ou referência?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dependência ou referência?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-usar-omsihook-diretamente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Usar OmsiHook diretamente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-usar-apenas-como-referencia-de-pesquisa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Usar apenas como referência de pesquisa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-abordagem-hibrida-recomendacao-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Abordagem híbrida — recomendação atual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prioridade-de-testes-quando-houver-acesso-ao-pc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prioridade de testes quando houver acesso ao PC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeira-consequencia-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeira consequência arquitetural
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estado-de-viabilidade-atualizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estado de viabilidade atualizado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxima-investigacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Próxima investigação
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-performance-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controles de performance em runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adaptive-mirrors-reflections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptive Mirrors e reflexos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desenvolvimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desenvolvimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/devlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devlog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Problemas conhecidos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compatibilidade
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Compatibilidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compatibility/hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compatibility/software/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Software
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compatibility/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependências
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Legal
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Legal
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../legal/third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terceiros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao-rapida" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão rápida
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitetura-do-omsihook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Arquitetura do OmsiHook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#globais-ja-expostos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Globais já expostos
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Globais já expostos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relevancia-para-o-infinitum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relevância para o Infinitum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estruturas-do-mapa-relevantes-para-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estruturas do mapa relevantes para performance
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estruturas do mapa relevantes para performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-tile-reduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dynamic Tile Reduction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Loading / Streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-cada-tile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estrutura de cada tile
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura de cada tile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#valor-para-telemetria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valor para telemetria
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trafego-e-pedestres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tráfego e pedestres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texture-manager-e-material-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Texture Manager e Material Manager
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d3d-e-metodos-remotos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D3D e métodos remotos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compatibilidade-e-arquitetura-de-processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compatibilidade e arquitetura de processo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dependencia-ou-referencia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependência ou referência?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dependência ou referência?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-usar-omsihook-diretamente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Usar OmsiHook diretamente
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-usar-apenas-como-referencia-de-pesquisa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Usar apenas como referência de pesquisa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-abordagem-hibrida-recomendacao-atual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Abordagem híbrida — recomendação atual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prioridade-de-testes-quando-houver-acesso-ao-pc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prioridade de testes quando houver acesso ao PC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeira-consequencia-arquitetural" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeira consequência arquitetural
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estado-de-viabilidade-atualizado" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Estado de viabilidade atualizado
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proxima-investigacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Próxima investigação
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="pesquisa-omsihook-e-controle-runtime-do-omsi-2">Pesquisa — OmsiHook e controle runtime do OMSI 2<a class="headerlink" href="#pesquisa-omsihook-e-controle-runtime-do-omsi-2" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Estado: pesquisa técnica. Esta página analisa o OmsiHook como referência e possível camada de integração para o Infinitum Performance Engine e o Loading &amp; Streaming Manager.</p>
+</blockquote>
+<h2 id="conclusao-rapida">Conclusão rápida<a class="headerlink" href="#conclusao-rapida" title="Permanent link">&para;</a></h2>
+<p>OmsiHook é mais promissor do que parecia na primeira análise. Ele não expõe apenas veículo e câmera: a biblioteca já mapeia estruturas centrais do mapa, tiles, tráfego, humanos, gerenciadores de textura/material e estados de carregamento. Também possui leitura e escrita de memória em tempo real, além de suporte a métodos remotos por plugin auxiliar.</p>
+<p>Isso não significa que todos os controles do Performance Engine estejam prontos para uso. Significa que já existe uma base pública de engenharia reversa que reduz bastante o trabalho inicial de descoberta.</p>
+<h2 id="arquitetura-do-omsihook">Arquitetura do OmsiHook<a class="headerlink" href="#arquitetura-do-omsihook" title="Permanent link">&para;</a></h2>
+<p>O ponto de entrada é <code>OmsiHook</code>, que anexa ao processo <code>omsi.exe</code> e expõe:</p>
+<ul>
+<li><code>Globals</code> — objetos globais já reconhecidos;</li>
+<li><code>OmsiProcess</code> — processo do OMSI;</li>
+<li><code>RemoteMethods</code> — ponte para chamadas remotas;</li>
+<li>eventos de estado do mapa e do contexto D3D.</li>
+</ul>
+<p>A biblioteca suporta leitura e escrita de memória em runtime. O projeto também mantém um plugin RPC para operações que exigem execução dentro do processo do OMSI.</p>
+<h2 id="globais-ja-expostos">Globais já expostos<a class="headerlink" href="#globais-ja-expostos" title="Permanent link">&para;</a></h2>
+<p><code>OmsiGlobals</code> atualmente fornece acesso direto a estruturas como:</p>
+<ul>
+<li>veículos rodoviários ativos;</li>
+<li>veículo do jogador;</li>
+<li>clima;</li>
+<li>mapa atual;</li>
+<li>data e hora;</li>
+<li>humanos presentes na cena;</li>
+<li>gerenciador de horários;</li>
+<li>Program Manager;</li>
+<li>câmera principal;</li>
+<li>Material Manager;</li>
+<li>Texture Manager.</li>
+</ul>
+<h3 id="relevancia-para-o-infinitum">Relevância para o Infinitum<a class="headerlink" href="#relevancia-para-o-infinitum" title="Permanent link">&para;</a></h3>
+<p>Isso é suficiente para construir um primeiro <code>RuntimeContext</code> contendo mapa, veículo, posição, câmera, quantidade de entidades e estado da sessão sem precisar descobrir tudo do zero.</p>
+<h2 id="estruturas-do-mapa-relevantes-para-performance">Estruturas do mapa relevantes para performance<a class="headerlink" href="#estruturas-do-mapa-relevantes-para-performance" title="Permanent link">&para;</a></h2>
+<p>A classe <code>OmsiMap</code> expõe vários campos especialmente importantes.</p>
+<h3 id="dynamic-tile-reduction">Dynamic Tile Reduction<a class="headerlink" href="#dynamic-tile-reduction" title="Permanent link">&para;</a></h3>
+<p>Campos mapeados:</p>
+<ul>
+<li><code>DynTile_RedTimer</code>;</li>
+<li><code>FDynTileIst</code>;</li>
+<li><code>NextTime_CheckKachelUnloading</code>;</li>
+<li><code>NewNearKachelnExist</code>;</li>
+<li><code>LoadedKacheln</code>;</li>
+<li><code>CenterKachel</code>;</li>
+<li><code>CenterKachelNum</code>.</li>
+</ul>
+<p>Esses campos reforçam que o mecanismo de tiles dinâmicos realmente existe como estado interno acessível.</p>
+<p><strong>Hipótese de pesquisa:</strong> <code>FDynTileIst</code> pode representar o estado corrente da redução dinâmica de tiles. Isso precisa ser validado localmente antes de qualquer escrita.</p>
+<h3 id="loading-streaming">Loading / Streaming<a class="headerlink" href="#loading-streaming" title="Permanent link">&para;</a></h3>
+<p>O mapa contém:</p>
+<ul>
+<li>array <code>Kacheln</code>;</li>
+<li>array <code>KachelInfos</code>;</li>
+<li>flag global <code>Loaded</code>;</li>
+<li>referência a uma estrutura de thread de tile ainda não mapeada no projeto (<code>ThreadTileLoadAndRefresh</code>, marcada como TODO).</li>
+</ul>
+<p>Isso torna o subsistema de tiles a primeira frente concreta do futuro Loading &amp; Streaming Manager.</p>
+<h2 id="estrutura-de-cada-tile">Estrutura de cada tile<a class="headerlink" href="#estrutura-de-cada-tile" title="Permanent link">&para;</a></h2>
+<p><code>OmsiMapKachel</code> expõe estados muito interessantes para diagnóstico de carregamento:</p>
+<ul>
+<li><code>Loaded</code>;</li>
+<li><code>Load_Request</code>;</li>
+<li><code>Failed</code>;</li>
+<li><code>ThreadLoading</code>;</li>
+<li><code>ThreadLoading_Real</code>;</li>
+<li><code>ThreadLoading_Render</code>;</li>
+<li><code>Prepared_For_Ode</code>;</li>
+<li><code>Splines_Refreshed</code>;</li>
+<li><code>Objects_Refreshed</code>;</li>
+<li><code>Paths_Refreshed</code>.</li>
+</ul>
+<p>Também permite enumerar:</p>
+<ul>
+<li>objetos do arquivo;</li>
+<li>splines do arquivo;</li>
+<li>objetos runtime;</li>
+<li>path groups;</li>
+<li>path segments;</li>
+<li>objetos de superfície;</li>
+<li>spline segments.</li>
+</ul>
+<h3 id="valor-para-telemetria">Valor para telemetria<a class="headerlink" href="#valor-para-telemetria" title="Permanent link">&para;</a></h3>
+<p>Sem alterar nada, o Infinitum pode potencialmente observar:</p>
+<pre><code class="language-text">TileTelemetry
+├─ loaded_tiles
+├─ requested_tiles
+├─ tiles_loading
+├─ tiles_loading_real
+├─ tiles_loading_render
+├─ failed_tiles
+├─ objects_per_tile
+├─ splines_per_tile
+└─ path_segments_per_tile
+</code></pre>
+<p>Isso abre a possibilidade de correlacionar picos de frametime com eventos reais de carregamento de tile em vez de apenas chamar qualquer queda de FPS de "stutter".</p>
+<h2 id="trafego-e-pedestres">Tráfego e pedestres<a class="headerlink" href="#trafego-e-pedestres" title="Permanent link">&para;</a></h2>
+<p><code>OmsiMap</code> possui funções e acumuladores relacionados à densidade de tráfego:</p>
+<ul>
+<li><code>Func_TrafficDensity_Passenger</code>;</li>
+<li><code>Func_TrafficDensity_Road</code>;</li>
+<li><code>Acct_TrafficDensity_Passenger</code>;</li>
+<li><code>Acct_TrafficDensity_Road</code>;</li>
+<li><code>UnschedVehGroups</code>.</li>
+</ul>
+<p><code>OmsiGlobals</code> também expõe:</p>
+<ul>
+<li>lista de veículos ativos;</li>
+<li>lista de humanos presentes na cena.</li>
+</ul>
+<p>Isso melhora bastante a viabilidade do <code>CPU Budget</code>: mesmo que o controle global de AI ainda não esteja mapeado, já podemos medir a quantidade real de entidades presentes e estudar como ela se relaciona com frametime.</p>
+<h2 id="texture-manager-e-material-manager">Texture Manager e Material Manager<a class="headerlink" href="#texture-manager-e-material-manager" title="Permanent link">&para;</a></h2>
+<p>O OmsiHook expõe os gerenciadores centrais de textura e material. O exemplo oficial também enumera itens do Texture Manager e demonstra manipulação de texturas Direct3D.</p>
+<p>Isso pode ser útil para:</p>
+<ul>
+<li>telemetria de quantidade de texturas carregadas;</li>
+<li>investigação de cache;</li>
+<li>diagnóstico de assets pesados;</li>
+<li>futura integração do Graphics Engine.</li>
+</ul>
+<p>Não devemos assumir ainda que isso permite controlar o orçamento de VRAM do OMSI com segurança.</p>
+<h2 id="d3d-e-metodos-remotos">D3D e métodos remotos<a class="headerlink" href="#d3d-e-metodos-remotos" title="Permanent link">&para;</a></h2>
+<p>OmsiHook monitora o estado do contexto Direct3D e pode inicializar hooks D3D através de métodos remotos. O projeto também possui uma classe <code>D3DTexture</code> capaz de envolver texturas <code>IDirect3DTexture9</code> existentes e atualizar conteúdo.</p>
+<p>Para o Infinitum isso é relevante como referência arquitetural, mas nossa stack gráfica atual passa por dgVoodoo2/D3D11/ReShade. Portanto, não devemos adicionar outro caminho gráfico ao runtime sem necessidade.</p>
+<h2 id="compatibilidade-e-arquitetura-de-processo">Compatibilidade e arquitetura de processo<a class="headerlink" href="#compatibilidade-e-arquitetura-de-processo" title="Permanent link">&para;</a></h2>
+<p>O projeto Omsi-Extensions é voltado ao OMSI 32-bit e sua documentação de build indica Windows x86_32. Isso combina com a arquitetura do <code>Omsi.exe</code>, mas influencia a nossa implementação.</p>
+<p>Uma arquitetura possível é:</p>
+<pre><code class="language-text">Omsi.exe (32-bit)
+   ↓
+Infinitum Runtime Bridge x86
+   ├─ telemetria OMSI
+   ├─ leitura de estruturas internas
+   └─ comandos runtime validados
+        ↓ IPC
+Infinitum Configurator / Diagnostics x64
+</code></pre>
+<p>Assim, a interface principal não precisa ficar presa ao processo x86.</p>
+<h2 id="dependencia-ou-referencia">Dependência ou referência?<a class="headerlink" href="#dependencia-ou-referencia" title="Permanent link">&para;</a></h2>
+<p>Há três opções:</p>
+<h3 id="1-usar-omsihook-diretamente">1. Usar OmsiHook diretamente<a class="headerlink" href="#1-usar-omsihook-diretamente" title="Permanent link">&para;</a></h3>
+<p>Vantagens:</p>
+<ul>
+<li>acelera o protótipo;</li>
+<li>mapeamentos já prontos;</li>
+<li>leitura/escrita estruturada;</li>
+<li>suporte a RPC.</li>
+</ul>
+<p>Riscos:</p>
+<ul>
+<li>dependência externa central;</li>
+<li>necessidade de revisar licença e redistribuição;</li>
+<li>estabilidade ligada aos offsets e à versão do OMSI;</li>
+<li>áreas ainda incompletas/TODO.</li>
+</ul>
+<h3 id="2-usar-apenas-como-referencia-de-pesquisa">2. Usar apenas como referência de pesquisa<a class="headerlink" href="#2-usar-apenas-como-referencia-de-pesquisa" title="Permanent link">&para;</a></h3>
+<p>Criar uma camada própria do Infinitum usando os conceitos e estruturas que forem legalmente utilizáveis e tecnicamente reproduzidos.</p>
+<p>Vantagens:</p>
+<ul>
+<li>maior controle arquitetural;</li>
+<li>dependência runtime menor;</li>
+<li>API desenhada especificamente para Performance/Streaming.</li>
+</ul>
+<p>Custo:</p>
+<ul>
+<li>mais engenharia reversa e manutenção.</li>
+</ul>
+<h3 id="3-abordagem-hibrida-recomendacao-atual">3. Abordagem híbrida — recomendação atual<a class="headerlink" href="#3-abordagem-hibrida-recomendacao-atual" title="Permanent link">&para;</a></h3>
+<p>Usar OmsiHook na fase experimental para descobrir e validar estruturas. Depois decidir, campo por campo, quais mecanismos entram numa camada própria <code>Infinitum Runtime Bridge</code>.</p>
+<h2 id="prioridade-de-testes-quando-houver-acesso-ao-pc">Prioridade de testes quando houver acesso ao PC<a class="headerlink" href="#prioridade-de-testes-quando-houver-acesso-ao-pc" title="Permanent link">&para;</a></h2>
+<ol>
+<li>anexar ao OMSI apenas em modo leitura;</li>
+<li>confirmar mapa, câmera e veículo;</li>
+<li>registrar <code>LoadedKacheln</code> e <code>Kacheln.Length</code>;</li>
+<li>dirigir atravessando limites de tiles;</li>
+<li>registrar <code>Load_Request</code>, <code>ThreadLoading*</code> e <code>Loaded</code> por tile;</li>
+<li>correlacionar esses eventos com frametime;</li>
+<li>contar veículos ativos e humanos;</li>
+<li>correlacionar densidade de entidades com frametime;</li>
+<li>observar <code>FDynTileIst</code> durante quedas de FPS;</li>
+<li>somente depois iniciar testes de escrita em campos isolados e reversíveis.</li>
+</ol>
+<h2 id="primeira-consequencia-arquitetural">Primeira consequência arquitetural<a class="headerlink" href="#primeira-consequencia-arquitetural" title="Permanent link">&para;</a></h2>
+<p>A pesquisa sugere adicionar ao Telemetry Engine um canal específico chamado provisoriamente <code>OmsiRuntimeTelemetry</code>:</p>
+<pre><code class="language-text">OmsiRuntimeTelemetry
+├─ map_loaded
+├─ loaded_tiles
+├─ loading_tiles
+├─ failed_tiles
+├─ active_road_vehicles
+├─ active_humans
+├─ player_tile
+├─ center_tile
+├─ dynamic_tile_state
+└─ d3d_context_ready
+</code></pre>
+<p>Esse canal não substitui métricas de CPU/GPU/frametime. Ele explica <strong>o que a engine estava fazendo</strong> quando o desempenho mudou.</p>
+<h2 id="estado-de-viabilidade-atualizado">Estado de viabilidade atualizado<a class="headerlink" href="#estado-de-viabilidade-atualizado" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Área</th>
+<th>Antes</th>
+<th>Após análise do OmsiHook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Telemetria runtime</td>
+<td>Alta</td>
+<td>Muito alta</td>
+</tr>
+<tr>
+<td>Contagem de AI/humanos</td>
+<td>Incerta</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td>Estado de tiles</td>
+<td>Média</td>
+<td>Muito alta</td>
+</tr>
+<tr>
+<td>Diagnóstico de loading</td>
+<td>Baixa</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td>Dynamic Tile research</td>
+<td>Alta</td>
+<td>Muito alta</td>
+</tr>
+<tr>
+<td>Tráfego adaptativo</td>
+<td>Incerta</td>
+<td>Média, exige localização do controle correto</td>
+</tr>
+<tr>
+<td>Streaming customizado</td>
+<td>Baixa</td>
+<td>Média/experimental</td>
+</tr>
+<tr>
+<td>Texture diagnostics</td>
+<td>Média</td>
+<td>Alta para observação</td>
+</tr>
+</tbody>
+</table>
+<h2 id="proxima-investigacao">Próxima investigação<a class="headerlink" href="#proxima-investigacao" title="Permanent link">&para;</a></h2>
+<p>A próxima pesquisa deve mirar dois pontos:</p>
+<ol>
+<li>localizar no código/mapeamentos públicos os objetos que representam opções globais e limites de AI/performance;</li>
+<li>estudar como o OMSI executa o ciclo de carregamento/descarregamento de tiles e quais métodos internos já foram identificados pelo OmsiHook.</li>
+</ol>
+<p>A regra continua a mesma: <strong>observar primeiro, escrever depois</strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

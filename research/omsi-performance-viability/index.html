@@ -1,0 +1,2016 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Modernização gráfica, desempenho e infraestrutura para OMSI 2">
+      
+      
+      
+      
+        <link rel="prev" href="../../architecture/loading-streaming/">
+      
+      
+        <link rel="next" href="../omsi-hook-runtime/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Viabilidade do Performance Engine no OMSI 2 - Infinitum Graphics Framework</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pesquisa-tecnica-de-viabilidade-performance-engine-no-omsi-2" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Infinitum Graphics Framework" class="md-header__button md-logo" aria-label="Infinitum Graphics Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Infinitum Graphics Framework
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Viabilidade do Performance Engine no OMSI 2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/InfinitumGames/infinitum-graphics-framework" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    InfinitumGames/infinitum-graphics-framework
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Infinitum Graphics Framework" class="md-nav__button md-logo" aria-label="Infinitum Graphics Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Infinitum Graphics Framework
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/InfinitumGames/infinitum-graphics-framework" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    InfinitumGames/infinitum-graphics-framework
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../current-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Estado atual
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Arquitetura
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Arquitetura
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visão geral
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/graphics-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipeline gráfico
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/neural-rendering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neural Rendering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Engine
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Performance Engine
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/performance-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture v0.1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/telemetry-engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Telemetry Engine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/performance-controller/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance Controller
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/adaptive-quality-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptive Quality Manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/loading-streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loading & Streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pesquisa
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pesquisa
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Viabilidade do Performance Engine no OMSI 2
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Viabilidade do Performance Engine no OMSI 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo executivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descobertas-confirmadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas confirmadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Descobertas confirmadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-optionscfg-e-o-centro-das-opcoes-globais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. options.cfg é o centro das opções globais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-omsi-ja-possui-dois-mecanismos-adaptativos-internos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OMSI já possui dois mecanismos adaptativos internos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tiles-visibilidade-e-complexidade-tem-impacto-direto-conhecido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Tiles, visibilidade e complexidade têm impacto direto conhecido
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-trafego-e-pessoas-sao-alvos-fortes-de-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Tráfego e pessoas são alvos fortes de CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-ha-uma-variavel-de-sistema-util-para-frametime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Há uma variável de sistema útil para frametime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-a-api-oficial-de-plug-ins-e-limitada-para-nosso-objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. A API oficial de plug-ins é limitada para nosso objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-omsihook-e-uma-rota-tecnica-promissora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. OmsiHook é uma rota técnica promissora
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-inicial-de-viabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz inicial de viabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeira-hipotese-de-arquitetura-tecnica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeira hipótese de arquitetura técnica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primeira hipótese de arquitetura técnica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nivel-a-configurator-pre-jogo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nível A — Configurator / pré-jogo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nivel-b-telemetry-engine-em-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nível B — Telemetry Engine em runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nivel-c-adaptive-runtime-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nível C — Adaptive Runtime Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ordem-de-investigacao-local-recomendada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ordem de investigação local recomendada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criterios-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critérios de segurança
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão inicial
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../omsi-hook-runtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OmsiHook e controle runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-performance-controls/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Controles de performance em runtime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adaptive-mirrors-reflections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Adaptive Mirrors e reflexos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Desenvolvimento
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Desenvolvimento
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/devlog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devlog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/known-issues/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Problemas conhecidos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compatibilidade
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Compatibilidade
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compatibility/hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compatibility/software/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Software
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../compatibility/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependências
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Legal
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Legal
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../legal/third-party/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terceiros
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#resumo-executivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resumo executivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descobertas-confirmadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Descobertas confirmadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Descobertas confirmadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-optionscfg-e-o-centro-das-opcoes-globais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. options.cfg é o centro das opções globais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-omsi-ja-possui-dois-mecanismos-adaptativos-internos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. OMSI já possui dois mecanismos adaptativos internos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-tiles-visibilidade-e-complexidade-tem-impacto-direto-conhecido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Tiles, visibilidade e complexidade têm impacto direto conhecido
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-trafego-e-pessoas-sao-alvos-fortes-de-cpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Tráfego e pessoas são alvos fortes de CPU
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-ha-uma-variavel-de-sistema-util-para-frametime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Há uma variável de sistema útil para frametime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-a-api-oficial-de-plug-ins-e-limitada-para-nosso-objetivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. A API oficial de plug-ins é limitada para nosso objetivo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-omsihook-e-uma-rota-tecnica-promissora" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. OmsiHook é uma rota técnica promissora
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matriz-inicial-de-viabilidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Matriz inicial de viabilidade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeira-hipotese-de-arquitetura-tecnica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Primeira hipótese de arquitetura técnica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Primeira hipótese de arquitetura técnica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nivel-a-configurator-pre-jogo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nível A — Configurator / pré-jogo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nivel-b-telemetry-engine-em-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nível B — Telemetry Engine em runtime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nivel-c-adaptive-runtime-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nível C — Adaptive Runtime Controller
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ordem-de-investigacao-local-recomendada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ordem de investigação local recomendada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criterios-de-seguranca" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critérios de segurança
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusao-inicial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusão inicial
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="pesquisa-tecnica-de-viabilidade-performance-engine-no-omsi-2">Pesquisa técnica de viabilidade — Performance Engine no OMSI 2<a class="headerlink" href="#pesquisa-tecnica-de-viabilidade-performance-engine-no-omsi-2" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Estado: pesquisa inicial. Este documento separa o que já é suportado por documentação pública, o que parece tecnicamente promissor e o que ainda depende de validação local no executável.</p>
+</blockquote>
+<h2 id="resumo-executivo">Resumo executivo<a class="headerlink" href="#resumo-executivo" title="Permanent link">&para;</a></h2>
+<p>A primeira pesquisa indica que o OMSI 2 já possui alguns mecanismos internos de adaptação de desempenho e armazena a maioria dos parâmetros globais em <code>options.cfg</code>. Porém, a interface oficial de plug-ins é limitada principalmente a variáveis locais/sistema e triggers; ela não expõe diretamente, de forma documentada, controles globais como tráfego, tiles, visibilidade ou reflexos.</p>
+<p>Isso sugere três níveis de integração para o Infinitum Performance Engine:</p>
+<ol>
+<li><strong>Configuração segura antes do jogo</strong> — editar/gerar <code>options.cfg</code> e presets.</li>
+<li><strong>Telemetria e diagnóstico em runtime</strong> — usar variáveis de sistema, APIs de processo e/ou OmsiHook.</li>
+<li><strong>Controle adaptativo real em runtime</strong> — provavelmente dependerá de memória interna, hooks ou métodos nativos não expostos pela API oficial.</li>
+</ol>
+<h2 id="descobertas-confirmadas">Descobertas confirmadas<a class="headerlink" href="#descobertas-confirmadas" title="Permanent link">&para;</a></h2>
+<h3 id="1-optionscfg-e-o-centro-das-opcoes-globais">1. <code>options.cfg</code> é o centro das opções globais<a class="headerlink" href="#1-optionscfg-e-o-centro-das-opcoes-globais" title="Permanent link">&para;</a></h3>
+<p>A documentação da comunidade registra que as configurações atuais do OMSI ficam no arquivo <code>options.cfg</code> na pasta principal e presets ficam em <code>option_presets</code>.</p>
+<p>Entradas observadas em arquivos públicos incluem:</p>
+<ul>
+<li><code>[performance_tiledistmax]</code> — quantidade máxima de tiles vizinhos;</li>
+<li><code>[performance_maxObjDist]</code> — distância máxima de objetos;</li>
+<li><code>[performance_minObjSize]</code> — tamanho mínimo de objeto;</li>
+<li><code>[performance_minObjSizeRefl]</code> — tamanho mínimo em reflexos;</li>
+<li><code>[performance_realreflexions]</code> — modo de reflexos;</li>
+<li><code>[performance_reflTexSize]</code> — textura de reflexos;</li>
+<li><code>[performance_dyn_redrefl]</code> — limiares de reflexão dinâmica;</li>
+<li><code>[performance_dyn_tile_red]</code> — limiares de redução dinâmica de tiles;</li>
+<li><code>[maxFPS]</code> — alvo/limite de FPS;</li>
+<li><code>[maxcomplexity]</code> e <code>[maxcomplexity_map]</code>;</li>
+<li><code>[texmemlimit]</code>;</li>
+<li><code>[sound_maxcount]</code>;</li>
+<li><code>[AIMaxCountRandom]</code>;</li>
+<li><code>[AIUnschedFactor]</code>;</li>
+<li><code>[AIMaxCountParked]</code>;</li>
+<li><code>[AIPassFactor]</code>;</li>
+<li><code>[AIMaxCountScheduled]</code>;</li>
+<li><code>[AIPriorityScheduled]</code>;</li>
+<li><code>[useLowAIList]</code>.</li>
+</ul>
+<h3 id="2-omsi-ja-possui-dois-mecanismos-adaptativos-internos">2. OMSI já possui dois mecanismos adaptativos internos<a class="headerlink" href="#2-omsi-ja-possui-dois-mecanismos-adaptativos-internos" title="Permanent link">&para;</a></h3>
+<p>O manual oficial descreve:</p>
+<ul>
+<li><strong>Forced Economical Reflections Mode</strong> — muda reflexos de completo para econômico quando o FPS cai abaixo de um limiar e volta quando sobe acima de outro;</li>
+<li><strong>Dynamic Tile Reduction</strong> — reduz o número de tiles ativos quando o FPS cai abaixo de um limiar e restaura quando melhora.</li>
+</ul>
+<p>Isso é especialmente importante para o Infinitum Performance Engine: a ideia de hysteresis/limiares já existe na própria engine e podemos estudar como expandi-la para outros recursos.</p>
+<h3 id="3-tiles-visibilidade-e-complexidade-tem-impacto-direto-conhecido">3. Tiles, visibilidade e complexidade têm impacto direto conhecido<a class="headerlink" href="#3-tiles-visibilidade-e-complexidade-tem-impacto-direto-conhecido" title="Permanent link">&para;</a></h3>
+<p>O manual e documentação da comunidade confirmam que:</p>
+<ul>
+<li>tiles carregados crescem rapidamente conforme o raio aumenta;</li>
+<li>distância de visibilidade é limitada também pelos tiles ativos;</li>
+<li>complexidade de objetos/mapa reduz a quantidade de conteúdo calculado/carregado;</li>
+<li>reflexos completos atualizam todos os espelhos continuamente e custam mais recursos;</li>
+<li>modo econômico atualiza um espelho por vez.</li>
+</ul>
+<h3 id="4-trafego-e-pessoas-sao-alvos-fortes-de-cpu">4. Tráfego e pessoas são alvos fortes de CPU<a class="headerlink" href="#4-trafego-e-pessoas-sao-alvos-fortes-de-cpu" title="Permanent link">&para;</a></h3>
+<p>O manual afirma que AI exige recursos significativos porque veículos e pedestres precisam acompanhar suas próprias posições e as de outros agentes. Ele também documenta limites separados para veículos não agendados, agendados, pessoas, passageiros nas paradas e prioridade de linhas.</p>
+<p>Isso valida a arquitetura de <strong>CPU Budget</strong> como frente importante.</p>
+<h3 id="5-ha-uma-variavel-de-sistema-util-para-frametime">5. Há uma variável de sistema útil para frametime<a class="headerlink" href="#5-ha-uma-variavel-de-sistema-util-para-frametime" title="Permanent link">&para;</a></h3>
+<p>A lista pública de variáveis de sistema do OMSI inclui <code>Timegap</code>, definida como o tempo de duração do frame em segundos. Isso oferece um caminho nativo para telemetria básica de frametime sem depender inicialmente de captura gráfica externa.</p>
+<h3 id="6-a-api-oficial-de-plug-ins-e-limitada-para-nosso-objetivo">6. A API oficial de plug-ins é limitada para nosso objetivo<a class="headerlink" href="#6-a-api-oficial-de-plug-ins-e-limitada-para-nosso-objetivo" title="Permanent link">&para;</a></h3>
+<p>A interface oficial de plug-ins permite ler/escrever variáveis de veículo, variáveis de sistema e strings, além de acionar triggers. Não há documentação pública que exponha diretamente os parâmetros de performance globais do <code>options.cfg</code> como variáveis de plug-in.</p>
+<p>Portanto, um plug-in OMSI puro provavelmente é suficiente para telemetria e integração com variáveis conhecidas, mas não para controlar todas as opções de performance dinamicamente.</p>
+<h3 id="7-omsihook-e-uma-rota-tecnica-promissora">7. OmsiHook é uma rota técnica promissora<a class="headerlink" href="#7-omsihook-e-uma-rota-tecnica-promissora" title="Permanent link">&para;</a></h3>
+<p>O projeto público Omsi-Extensions/OmsiHook fornece leitura e escrita da memória do OMSI em tempo real, expõe vários objetos globais e possui suporte a métodos remotos através de um plug-in nativo. A própria documentação mostra acesso a globais, mapa, câmera, veículos, texturas e outros objetos internos.</p>
+<p>Isso torna o OmsiHook uma referência técnica importante para descobrir endereços, estruturas e possíveis controles do Performance Engine.</p>
+<h2 id="matriz-inicial-de-viabilidade">Matriz inicial de viabilidade<a class="headerlink" href="#matriz-inicial-de-viabilidade" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Recurso</th>
+<th style="text-align: right;">Pré-jogo via <code>options.cfg</code></th>
+<th style="text-align: right;">Runtime documentado</th>
+<th style="text-align: right;">Runtime via hook/memória</th>
+<th>Classificação atual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Target FPS</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">Provável</td>
+<td>Alta viabilidade</td>
+</tr>
+<tr>
+<td>Frametime/telemetria</td>
+<td style="text-align: right;">N/A</td>
+<td style="text-align: right;">Sim (<code>Timegap</code>)</td>
+<td style="text-align: right;">Sim</td>
+<td>Alta viabilidade</td>
+</tr>
+<tr>
+<td>Tiles vizinhos</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Parcial: OMSI já reduz dinamicamente</td>
+<td style="text-align: right;">Provável</td>
+<td>Alta prioridade</td>
+</tr>
+<tr>
+<td>Visibilidade de objetos</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média/alta</td>
+</tr>
+<tr>
+<td>Complexidade de objetos/mapa</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Reflexos completos/econômicos</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Sim, mecanismo adaptativo interno</td>
+<td style="text-align: right;">Provável</td>
+<td>Alta viabilidade</td>
+</tr>
+<tr>
+<td>Resolução de reflexos</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Tráfego não agendado</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Alta prioridade</td>
+</tr>
+<tr>
+<td>Tráfego agendado</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Alta prioridade</td>
+</tr>
+<tr>
+<td>Prioridade de horários</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média/alta</td>
+</tr>
+<tr>
+<td>Pedestres</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Alta prioridade</td>
+</tr>
+<tr>
+<td>Passageiros nas paradas</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Carros estacionados</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Lista AI reduzida</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Texturas low-res/limites</td>
+<td style="text-align: right;">Sim</td>
+<td style="text-align: right;">Não identificado</td>
+<td style="text-align: right;">A investigar</td>
+<td>Média</td>
+</tr>
+<tr>
+<td>Loading/streaming de assets</td>
+<td style="text-align: right;">Parcial</td>
+<td style="text-align: right;">Não documentado</td>
+<td style="text-align: right;">Pesquisa profunda</td>
+<td>Baixa certeza</td>
+</tr>
+</tbody>
+</table>
+<h2 id="primeira-hipotese-de-arquitetura-tecnica">Primeira hipótese de arquitetura técnica<a class="headerlink" href="#primeira-hipotese-de-arquitetura-tecnica" title="Permanent link">&para;</a></h2>
+<h3 id="nivel-a-configurator-pre-jogo">Nível A — Configurator / pré-jogo<a class="headerlink" href="#nivel-a-configurator-pre-jogo" title="Permanent link">&para;</a></h3>
+<p>Seguro e implementável cedo:</p>
+<ul>
+<li>ler <code>options.cfg</code>;</li>
+<li>criar backup;</li>
+<li>gerar presets;</li>
+<li>validar valores;</li>
+<li>aplicar perfil Performance/Balanced/Quality;</li>
+<li>comparar configuração atual com baseline recomendado;</li>
+<li>restaurar configuração original.</li>
+</ul>
+<h3 id="nivel-b-telemetry-engine-em-runtime">Nível B — Telemetry Engine em runtime<a class="headerlink" href="#nivel-b-telemetry-engine-em-runtime" title="Permanent link">&para;</a></h3>
+<p>Primeiro protótipo:</p>
+<ul>
+<li>ler <code>Timegap</code>;</li>
+<li>calcular FPS derivado;</li>
+<li>média móvel;</li>
+<li>percentis de frametime;</li>
+<li>detectar picos/stutter;</li>
+<li>coletar CPU/GPU/RAM/VRAM via sistema operacional/APIs externas;</li>
+<li>registrar mapa/cenário quando possível.</li>
+</ul>
+<h3 id="nivel-c-adaptive-runtime-controller">Nível C — Adaptive Runtime Controller<a class="headerlink" href="#nivel-c-adaptive-runtime-controller" title="Permanent link">&para;</a></h3>
+<p>Somente depois de encontrar e validar os controles internos:</p>
+<ul>
+<li>alterar um parâmetro por vez;</li>
+<li>confirmar efeito sem abrir menu/recarregar;</li>
+<li>testar persistência e side effects;</li>
+<li>criar rollback;</li>
+<li>só então integrar ao controlador adaptativo.</li>
+</ul>
+<h2 id="ordem-de-investigacao-local-recomendada">Ordem de investigação local recomendada<a class="headerlink" href="#ordem-de-investigacao-local-recomendada" title="Permanent link">&para;</a></h2>
+<p>Quando houver acesso ao PC com OMSI, investigar nesta ordem:</p>
+<ol>
+<li>confirmar o conteúdo real do <code>options.cfg</code> da instalação atual;</li>
+<li>mapear quais opções mudam imediatamente ao salvar pelo menu;</li>
+<li>testar se edição externa do arquivo afeta uma sessão já aberta — expectativa inicial: provavelmente não para a maioria;</li>
+<li>observar <code>Timegap</code> via plug-in/OmsiHook;</li>
+<li>procurar em OmsiHook estruturas relacionadas a opções/performance;</li>
+<li>localizar em memória um valor fácil e distintivo, por exemplo visibilidade 500/700 m;</li>
+<li>alterar apenas esse valor em runtime e observar se a engine responde;</li>
+<li>repetir para tiles;</li>
+<li>repetir para AI/pedestres;</li>
+<li>testar reflexos, aproveitando o fato de OMSI já possuir lógica adaptativa própria.</li>
+</ol>
+<h2 id="criterios-de-seguranca">Critérios de segurança<a class="headerlink" href="#criterios-de-seguranca" title="Permanent link">&para;</a></h2>
+<p>Um parâmetro só pode entrar no Adaptive Quality Manager como <code>runtime-safe</code> quando:</p>
+<ul>
+<li>o endereço/estrutura é reproduzível na versão alvo do OMSI;</li>
+<li>a alteração produz efeito previsível;</li>
+<li>não corrompe save, mapa ou estado da sessão;</li>
+<li>não exige reinício oculto;</li>
+<li>pode ser revertida;</li>
+<li>passa por teste parado, dirigindo e em cenário pesado;</li>
+<li>não introduz stutter maior que o benefício.</li>
+</ul>
+<h2 id="conclusao-inicial">Conclusão inicial<a class="headerlink" href="#conclusao-inicial" title="Permanent link">&para;</a></h2>
+<p>A pesquisa favorece a viabilidade do projeto, mas com uma distinção clara: <strong>presets e telemetria são viáveis cedo; controle adaptativo profundo depende de engenharia de runtime</strong>.</p>
+<p>O ponto mais promissor é que a própria engine já contém lógica dinâmica para tiles e reflexos. Em vez de inventar tudo do zero, o Infinitum Performance Engine pode estudar esses mecanismos, reproduzir o conceito de hysteresis e expandi-lo de forma controlada para outros subsistemas.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
