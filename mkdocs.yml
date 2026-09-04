@@ -28,6 +28,7 @@ nav:
   - Pesquisa:
       - Viabilidade do Performance Engine no OMSI 2: research/omsi-performance-viability.md
       - OmsiHook e controle runtime: research/omsi-hook-runtime.md
+      - Controles de performance em runtime: research/runtime-performance-controls.md
   - Desenvolvimento:
       - Devlog: development/devlog.md
       - Benchmarks: development/benchmarks.md
