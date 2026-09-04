@@ -1,0 +1,40 @@
+site_name: Infinitum Graphics Framework
+site_description: Modernização gráfica, desempenho e infraestrutura para OMSI 2
+repo_name: InfinitumGames/infinitum-graphics-framework
+repo_url: https://github.com/InfinitumGames/infinitum-graphics-framework
+
+theme:
+  name: material
+  language: pt-BR
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+nav:
+  - Início: index.md
+  - Estado atual: current-status.md
+  - Roadmap: roadmap.md
+  - Arquitetura:
+      - Visão geral: architecture/overview.md
+      - Pipeline gráfico: architecture/graphics-pipeline.md
+      - Neural Rendering: architecture/neural-rendering.md
+      - Performance Engine: architecture/performance-engine.md
+      - Loading & Streaming: architecture/loading-streaming.md
+  - Desenvolvimento:
+      - Devlog: development/devlog.md
+      - Benchmarks: development/benchmarks.md
+      - Testes: development/testing.md
+      - Problemas conhecidos: development/known-issues.md
+  - Compatibilidade:
+      - Hardware: compatibility/hardware.md
+      - Software: compatibility/software.md
+      - Dependências: compatibility/dependencies.md
+  - Legal:
+      - Terceiros: legal/third-party.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
