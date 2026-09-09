@@ -1,6 +1,6 @@
 # Infinitum Graphics Framework for OMSI 2
 
-> Projeto experimental de modernização gráfica, desempenho e infraestrutura para OMSI 2.
+> Projeto experimental de modernização híbrida de gráficos, desempenho e infraestrutura para OMSI 2.
 
 ## Estado do projeto
 
@@ -16,22 +16,45 @@ O protótipo já demonstrou tecnicamente:
 - comunicação entre o processo 32-bit do OMSI 2 e um host 64-bit;
 - inicialização e execução experimental de NVIDIA Neural Rendering;
 - pipeline reproduzível usando FeedKit;
-- início da arquitetura do Infinitum Performance Engine.
+- início da arquitetura do Infinitum Performance Engine;
+- pesquisa de telemetria runtime, tiles, AI, memória e controles adaptativos.
 
-A execução técnica do pipeline **não significa** que qualidade visual, estabilidade ou ganho de desempenho final estejam validados. Esses pontos continuam em testes.
+A execução técnica do pipeline **não significa** que qualidade visual, estabilidade ou ganho de desempenho final estejam validados. Motion clarity, texturas/materiais, cockpit, espelhos, loading e benchmarks continuam em validação.
 
 ## Visão
 
-O Infinitum Graphics Framework não pretende ser apenas um pacote de shaders. A proposta é criar uma camada de modernização para o OMSI 2, organizada em pilares independentes:
+O Infinitum Graphics Framework não pretende ser apenas um pacote de shaders. A proposta é criar uma **camada híbrida de modernização da engine**, preservando a compatibilidade com o OMSI 2 x86 e deslocando serviços modernos para componentes externos quando tecnicamente seguro.
 
-- **Graphics Engine** — modernização visual, iluminação, pós-processamento e integração temporal/neural;
-- **Performance Engine** — frametime, qualidade adaptativa, CPU/GPU budget, AI, espelhos e estabilidade;
-- **Loading & Streaming Manager** — pesquisa e desenvolvimento de técnicas para reduzir loading e stutter;
-- **Diagnostics** — diagnóstico automatizado da instalação e do pipeline;
+O projeto é organizado em pilares independentes:
+
+- **Graphics Engine** — modernização visual, materiais, iluminação, pós-processamento e integração temporal/neural;
+- **Performance Engine** — telemetria, frametime, CPU/GPU/Simulation Budget, qualidade adaptativa, AI e espelhos;
+- **Loading & Streaming Manager** — telemetria de tiles, memória, cache, assets, loading e redução de stutter;
+- **Runtime Bridge** — integração segura entre o OMSI x86 e serviços modernos do framework;
+- **Host x64** — processamento neural, telemetria histórica, cache externo, diagnóstico e futuros serviços auxiliares;
+- **Diagnostics** — diagnóstico automatizado da instalação, memória e pipeline;
 - **Configurator** — interface moderna para configurar o framework;
 - **Backends** — NVIDIA inicialmente, com estudo futuro de alternativas para AMD e Intel.
 
-## Pipeline experimental atual
+## Arquitetura híbrida alvo
+
+```text
+OMSI Runtime x86
+  ├─ simulação / scripts / AI
+  ├─ mapa / tiles / veículos / humanos
+  └─ renderização legada
+          ↕ Runtime Bridge / IPC
+Infinitum Host x64
+  ├─ Performance Controller
+  ├─ Telemetry & Diagnostics
+  ├─ External Cache / Memory Services
+  ├─ Loading & Streaming Services
+  └─ Neural / Modern Graphics Services
+```
+
+O objetivo não é transformar o `Omsi.exe` em 64-bit nem prometer uso automático de todos os núcleos ou de toda a RAM do PC. A estratégia é **estender a engine ao redor de suas limitações** e reduzir trabalho desnecessário no processo legado sempre que houver um caminho validado.
+
+## Pipeline gráfico experimental atual
 
 ```text
 OMSI 2 (DirectX 9, 32-bit)
@@ -50,6 +73,12 @@ RenoDX / NGX / NVIDIA Neural Rendering
 ```
 
 Essa pilha representa a base experimental atual, não uma promessa de arquitetura final.
+
+## Princípio de desenvolvimento
+
+**Medir → entender → controlar → otimizar → modernizar.**
+
+Controles runtime só devem ser automatizados depois de telemetria reproduzível, mecanismo reversível e testes que demonstrem segurança.
 
 ## Documentação
 
