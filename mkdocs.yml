@@ -17,6 +17,8 @@ nav:
   - Roadmap: roadmap.md
   - Arquitetura:
       - Visão geral: architecture/overview.md
+      - Estratégia híbrida x86/x64: architecture/hybrid-x86-x64.md
+      - Runtime Bridge: architecture/runtime-bridge.md
       - Pipeline gráfico: architecture/graphics-pipeline.md
       - Neural Rendering: architecture/neural-rendering.md
       - Performance Engine:
@@ -24,6 +26,8 @@ nav:
           - Telemetry Engine: architecture/telemetry-engine.md
           - Performance Controller: architecture/performance-controller.md
           - Adaptive Quality Manager: architecture/adaptive-quality-manager.md
+          - Simulation Budget: architecture/simulation-budget.md
+          - External Memory & Cache: architecture/memory-manager.md
       - Loading & Streaming: architecture/loading-streaming.md
   - Pesquisa:
       - Viabilidade do Performance Engine no OMSI 2: research/omsi-performance-viability.md
