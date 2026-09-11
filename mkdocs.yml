@@ -30,11 +30,14 @@ nav:
           - External Memory & Cache: architecture/memory-manager.md
       - Loading & Streaming: architecture/loading-streaming.md
   - Pesquisa:
+      - Tool Survey: research/tool-survey.md
       - Viabilidade do Performance Engine no OMSI 2: research/omsi-performance-viability.md
       - OmsiHook e controle runtime: research/omsi-hook-runtime.md
       - Controles de performance em runtime: research/runtime-performance-controls.md
       - Adaptive Mirrors e reflexos: research/adaptive-mirrors-reflections.md
   - Desenvolvimento:
+      - Escopo fechado v1.0: development/scope-v1.md
+      - Cronograma v1.0: development/timeline-v1.md
       - Devlog: development/devlog.md
       - Benchmarks: development/benchmarks.md
       - Testes: development/testing.md
