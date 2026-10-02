@@ -1,4 +1,6 @@
-# Estado atual
+# Estado final
+
+> **Projeto encerrado em 1º de outubro de 2026.** Esta página registra o estado técnico no momento do encerramento e não representa trabalho em andamento.
 
 ## Confirmado tecnicamente
 
@@ -8,43 +10,39 @@
 - DLSS5-Feeder x86 comunicando-se com host64.
 - Host neural inicializando NGX e executando avaliações experimentais de Neural Rendering.
 - Instalação-base reproduzida com FeedKit.
+- Large Address Aware confirmado no executável testado.
 - Viabilidade inicial de telemetria runtime identificada para frametime, mapa, tiles, veículos e humanos.
-- Arquitetura híbrida x86/x64 adotada como direção do framework.
-- Falha real de alocação de texturas reproduzida no BusBrasilFest 2025: o logfile registra repetidamente `D3DERR_OUTOFVIDEOMEMORY` e falhas subsequentes em texturas de humanos, veículos, cenário, splines e mapa.
+- Falha de alocação de texturas reproduzida em conteúdo pesado, com `D3DERR_OUTOFVIDEOMEMORY` registrado no logfile.
+- Teste de controle em Berlin-Spandau demonstrou que a mesma cadeia podia operar com carga de texturas significativamente menor sem reproduzir a avalanche de falhas observada no mapa pesado.
 
-## Em validação crítica
+## Conclusões de pesquisa
 
-- **Memory/resource pressure:** determinar se o `D3DERR_OUTOFVIDEOMEMORY` está ligado principalmente ao address space x86/Large Address Aware, orçamento de textura do OMSI, wrapper D3D9→D3D11 ou combinação desses fatores.
-- **Motion clarity:** perda de nitidez/blur observada durante movimento no cockpit com o pipeline neural; execução técnica do NR está confirmada, mas qualidade temporal ainda não.
-- **Assets ausentes:** o logfile também contém referências realmente quebradas/ausentes em mods e cenário; isso é um problema separado das falhas de alocação.
-- cockpit, espelhos, chuva e noite;
-- benchmarks A/B reproduzíveis;
-- impacto real no desempenho total do OMSI;
-- custo de AI, pedestres, espelhos e carregamento de tiles.
+A investigação de memória indicou que o erro de texturas não podia ser atribuído simplesmente à falta de VRAM física. Durante testes problemáticos ainda havia memória física de GPU disponível e o processo não demonstrava, pelas métricas observadas, simples exaustão do address space. A evidência apontou para pressão de recursos no caminho legado D3D9/texture manager/wrapper associada a conteúdo pesado.
 
-## Em desenvolvimento
+O teste de controle também mostrou que quantidade de tiles isoladamente não explica a pressão: resolução, diversidade e peso dos assets, veículos AI, humanos e demais recursos do cenário precisam ser considerados.
+
+Não foi estabelecido um limite universal de memória de texturas para o OMSI. Os valores observados pertencem aos cenários testados e não devem ser generalizados como constante da engine.
+
+## Não concluído ao encerramento
+
+Permaneceram sem implementação própria completa ou validação final:
 
 - Infinitum Performance Engine;
-- Runtime Bridge x86/x64;
-- Telemetry Engine e primeiro protótipo read-only;
-- Loading & Streaming Manager e Tile Loading Telemetry;
-- External Memory & Cache Manager — pesquisa prioritária após o caso `D3DERR_OUTOFVIDEOMEMORY`;
-- Simulation Budget / AI Profiler — pesquisa;
-- Diagnostics, incluindo verificação de Large Address Aware, memória do processo, configuração de textura e classificação de erros de assets;
+- Runtime Bridge próprio x86/x64;
+- Telemetry Engine próprio;
+- Loading & Streaming Manager;
+- Memory & Resource Manager / Texture Budget Manager;
+- Asset & Texture Profiler;
+- Adaptive Mirrors;
+- Adaptive Quality Manager;
 - Configurator;
-- módulos gráficos próprios.
+- módulos gráficos próprios integrados;
+- benchmark A/B final de desempenho;
+- validação completa de cockpit, espelhos, chuva e noite;
+- solução para blur/perda de nitidez temporal do pipeline neural.
 
-## Próximo marco técnico
+## Interpretação correta
 
-Antes do benchmark gráfico final, fechar o baseline de memória e recursos:
+A execução técnica de componentes de terceiros e das provas de conceito não equivale a um produto Infinitum final. O projeto demonstrou viabilidade de várias ideias e documentou limitações importantes, mas foi encerrado antes da construção de um software integrado distribuível.
 
-1. verificar a flag `IMAGE_FILE_LARGE_ADDRESS_AWARE` (`0x20`) do `Omsi.exe` atual e registrar versão/hash;
-2. registrar `texmemlimit`, configuração do dgVoodoo e parâmetros relevantes do OMSI;
-3. criar telemetria read-only para memória do processo/address space;
-4. correlacionar timestamps de pressão de memória com o primeiro `D3DERR_OUTOFVIDEOMEMORY` e falhas de textura;
-5. repetir o cenário de teste de forma controlada;
-6. depois retomar A/B de qualidade temporal, cockpit e espelhos.
-
-> `D3DERR_OUTOFVIDEOMEMORY` não deve ser interpretado automaticamente como esgotamento da VRAM física da GPU. O projeto precisa medir o limite efetivo do processo e da cadeia D3D antes de atribuir causa.
-
-> Execução técnica não deve ser confundida com qualidade final ou ganho de desempenho validado. O projeto não promete converter o executável do OMSI para 64-bit, distribuir automaticamente a simulação por todos os núcleos ou remover os limites internos da engine x86.
+Consulte [Encerramento e retrospectiva](project-retrospective.md) para o registro consolidado.
