@@ -1,60 +1,62 @@
 # Infinitum Graphics Framework for OMSI 2
 
-> Projeto experimental de modernização híbrida de gráficos, desempenho e infraestrutura para OMSI 2.
+> Projeto experimental de pesquisa sobre modernização híbrida de gráficos, desempenho e infraestrutura para OMSI 2.
 
-## Estado do projeto
+## Status do projeto
 
-🚧 **Em desenvolvimento — experimental**
+🛑 **Desenvolvimento encerrado em 1º de outubro de 2026.**
 
-O projeto ainda não possui uma versão pública para download. O objetivo atual é construir e validar uma base técnica reproduzível antes de qualquer release.
+O Infinitum Graphics Framework foi encerrado definitivamente como projeto de desenvolvimento ativo. O repositório permanece disponível como **arquivo técnico e histórico de pesquisa**.
 
-O protótipo já demonstrou tecnicamente:
+Não existe release pública do Infinitum Graphics Framework e não há previsão de retomada, versão 1.0 ou suporte ativo.
+
+## O que foi demonstrado
+
+Durante a pesquisa e os protótipos experimentais, foram demonstrados:
 
 - tradução do pipeline DirectX 9 → DirectX 11;
-- acesso funcional ao depth buffer;
-- reconstrução de motion vectors;
+- acesso funcional e coerente ao depth buffer;
+- reconstrução de motion vectors com LumeniteFX;
 - comunicação entre o processo 32-bit do OMSI 2 e um host 64-bit;
 - inicialização e execução experimental de NVIDIA Neural Rendering;
 - pipeline reproduzível usando FeedKit;
-- início da arquitetura do Infinitum Performance Engine;
-- pesquisa de telemetria runtime, tiles, AI, memória e controles adaptativos.
+- validação de Large Address Aware no executável testado;
+- investigação controlada de falhas de texturas e `D3DERR_OUTOFVIDEOMEMORY`;
+- pesquisa de telemetria runtime, mapa, tiles, veículos, humanos, memória e controles adaptativos;
+- desenho conceitual de Performance Engine, Runtime Bridge, Loading & Streaming Manager e outros módulos.
 
-A execução técnica do pipeline **não significa** que qualidade visual, estabilidade ou ganho de desempenho final estejam validados. Motion clarity, texturas/materiais, cockpit, espelhos, loading e benchmarks continuam em validação.
+Esses resultados representam **pesquisa e provas de conceito**, não um produto integrado.
 
-## Visão
+## O que não foi concluído
 
-O Infinitum Graphics Framework não pretende ser apenas um pacote de shaders. A proposta é criar uma **camada híbrida de modernização da engine**, preservando a compatibilidade com o OMSI 2 x86 e deslocando serviços modernos para componentes externos quando tecnicamente seguro.
+Ao encerramento do projeto:
 
-O projeto é organizado em pilares independentes:
+- não existia executável próprio integrado pronto para distribuição;
+- não existia release Alpha/Beta/v1.0;
+- não havia benchmark A/B final demonstrando ganho consistente de FPS;
+- Neural Rendering ainda apresentava questões de qualidade temporal;
+- Performance Engine, Adaptive Quality, Adaptive Mirrors, Runtime Bridge próprio, Configurator, Loading & Streaming Manager e Memory & Resource Manager permaneceram em pesquisa, arquitetura ou planejamento;
+- não foi implementada uma conversão do OMSI para 64-bit, multicore nativo, DirectX 12 nativo ou Vulkan nativo.
 
-- **Graphics Engine** — modernização visual, materiais, iluminação, pós-processamento e integração temporal/neural;
-- **Performance Engine** — telemetria, frametime, CPU/GPU/Simulation Budget, qualidade adaptativa, AI e espelhos;
-- **Loading & Streaming Manager** — telemetria de tiles, memória, cache, assets, loading e redução de stutter;
-- **Runtime Bridge** — integração segura entre o OMSI x86 e serviços modernos do framework;
-- **Host x64** — processamento neural, telemetria histórica, cache externo, diagnóstico e futuros serviços auxiliares;
-- **Diagnostics** — diagnóstico automatizado da instalação, memória e pipeline;
-- **Configurator** — interface moderna para configurar o framework;
-- **Backends** — NVIDIA inicialmente, com estudo futuro de alternativas para AMD e Intel.
+## Arquitetura pesquisada
 
-## Arquitetura híbrida alvo
+A direção arquitetural estudada foi uma camada híbrida que mantivesse o OMSI 2 x86 e deslocasse serviços modernos para componentes externos:
 
 ```text
 OMSI Runtime x86
-  ├─ simulação / scripts / AI
-  ├─ mapa / tiles / veículos / humanos
-  └─ renderização legada
-          ↕ Runtime Bridge / IPC
-Infinitum Host x64
-  ├─ Performance Controller
-  ├─ Telemetry & Diagnostics
-  ├─ External Cache / Memory Services
-  ├─ Loading & Streaming Services
-  └─ Neural / Modern Graphics Services
+        ↕
+Runtime Bridge / IPC
+        ↕
+Host x64
+ ├─ Performance / Telemetry
+ ├─ Diagnostics
+ ├─ External Cache / Memory Services
+ └─ Neural / Modern Graphics Services
 ```
 
-O objetivo não é transformar o `Omsi.exe` em 64-bit nem prometer uso automático de todos os núcleos ou de toda a RAM do PC. A estratégia é **estender a engine ao redor de suas limitações** e reduzir trabalho desnecessário no processo legado sempre que houver um caminho validado.
+A arquitetura acima é documentação de pesquisa. Ela não chegou a ser implementada integralmente como software Infinitum.
 
-## Pipeline gráfico experimental atual
+## Pipeline gráfico experimental
 
 ```text
 OMSI 2 (DirectX 9, 32-bit)
@@ -72,31 +74,23 @@ host64
 RenoDX / NGX / NVIDIA Neural Rendering
 ```
 
-Essa pilha representa a base experimental atual, não uma promessa de arquitetura final.
+A execução técnica desse pipeline foi experimental e não deve ser interpretada como validação de qualidade visual, estabilidade ou desempenho final.
 
-## Princípio de desenvolvimento
+## Documentação preservada
 
-**Medir → entender → controlar → otimizar → modernizar.**
+A pasta [`docs/`](docs/) preserva arquitetura, pesquisas, testes, limitações e o roadmap histórico.
 
-Controles runtime só devem ser automatizados depois de telemetria reproduzível, mecanismo reversível e testes que demonstrem segurança.
-
-## Documentação
-
-A documentação pública está sendo construída na pasta [`docs/`](docs/).
-
-- [Estado atual](docs/current-status.md)
-- [Roadmap](docs/roadmap.md)
+- [Encerramento e retrospectiva](docs/project-retrospective.md)
+- [Estado final](docs/current-status.md)
+- [Roadmap histórico](docs/roadmap.md)
 - [Arquitetura](docs/architecture/overview.md)
 - [Pipeline gráfico](docs/architecture/graphics-pipeline.md)
-- [Performance Engine](docs/architecture/performance-engine.md)
 - [Devlog](docs/development/devlog.md)
 - [Dependências de terceiros](docs/legal/third-party.md)
 
-## Transparência técnica
+## Dependências e autoria
 
-O projeto separa explicitamente componentes próprios, integrações externas e componentes de terceiros. Dependências externas não serão redistribuídas sem autorização ou licença compatível.
-
-FeedKit, ReShade, dgVoodoo2, LumeniteFX, RenoDX, DLSS5-Feeder e componentes NVIDIA não são de autoria da Infinitum Games.
+FeedKit, ReShade, dgVoodoo2, LumeniteFX, RenoDX, DLSS5-Feeder e componentes NVIDIA não são de autoria da Infinitum Games. Este repositório não deve ser interpretado como redistribuição, endosso ou reivindicação de autoria sobre esses projetos.
 
 ## Aviso
 
@@ -104,4 +98,6 @@ Este projeto não é afiliado, patrocinado ou endossado pelos desenvolvedores do
 
 ---
 
-**Infinitum Games** — desenvolvimento experimental para modernização do OMSI 2.
+**Infinitum Games**  
+Período de pesquisa e desenvolvimento: **setembro de 2026 — 1º de outubro de 2026**  
+Estado final: **encerrado / arquivo técnico**
