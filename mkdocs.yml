@@ -1,5 +1,5 @@
-site_name: Infinitum Graphics Framework
-site_description: Modernização gráfica, desempenho e infraestrutura para OMSI 2
+site_name: Infinitum Graphics Framework — Arquivo
+site_description: Arquivo técnico do projeto experimental de modernização do OMSI 2
 repo_name: InfinitumGames/infinitum-graphics-framework
 repo_url: https://github.com/InfinitumGames/infinitum-graphics-framework
 
@@ -13,9 +13,10 @@ theme:
 
 nav:
   - Início: index.md
-  - Estado atual: current-status.md
-  - Roadmap: roadmap.md
-  - Arquitetura:
+  - Encerramento e retrospectiva: project-retrospective.md
+  - Estado final: current-status.md
+  - Roadmap histórico: roadmap.md
+  - Arquitetura pesquisada:
       - Visão geral: architecture/overview.md
       - Estratégia híbrida x86/x64: architecture/hybrid-x86-x64.md
       - Runtime Bridge: architecture/runtime-bridge.md
@@ -35,13 +36,13 @@ nav:
       - OmsiHook e controle runtime: research/omsi-hook-runtime.md
       - Controles de performance em runtime: research/runtime-performance-controls.md
       - Adaptive Mirrors e reflexos: research/adaptive-mirrors-reflections.md
-  - Desenvolvimento:
-      - Escopo fechado v1.0: development/scope-v1.md
-      - Cronograma v1.0: development/timeline-v1.md
+  - Desenvolvimento (histórico):
+      - Escopo v1.0 não concluído: development/scope-v1.md
+      - Cronograma v1.0 cancelado: development/timeline-v1.md
       - Devlog: development/devlog.md
       - Benchmarks: development/benchmarks.md
       - Testes: development/testing.md
-      - Problemas conhecidos: development/known-issues.md
+      - Problemas conhecidos ao encerramento: development/known-issues.md
   - Compatibilidade:
       - Hardware: compatibility/hardware.md
       - Software: compatibility/software.md
