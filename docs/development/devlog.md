@@ -9,3 +9,10 @@ A cadeia experimental passou por tradução DX9→D3D11, acesso ao depth via ReS
 Depois, o FeedKit foi adotado como base reproduzível de instalação experimental.
 
 Com a prova técnica estabelecida, o projeto foi ampliado para tratar gráficos e desempenho como pilares equivalentes.
+
+
+## Devlog final — Encerramento do projeto — 1º de outubro de 2026
+
+O desenvolvimento ativo do Infinitum Graphics Framework foi encerrado definitivamente. O projeto termina na fase de pesquisa e provas de conceito, sem release pública integrada.
+
+O repositório e a documentação permanecem públicos como arquivo técnico. Os resultados confirmados, limitações, investigações de memória/texturas e arquitetura proposta estão consolidados em [Encerramento e retrospectiva](../project-retrospective.md).
