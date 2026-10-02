@@ -1,45 +1,44 @@
-# Roadmap público
+# Roadmap histórico
 
-## Fase 0 — estabilizar o baseline atual
+> **Roadmap congelado em 1º de outubro de 2026.** O desenvolvimento foi encerrado. Os itens abaixo são preservados para documentar a direção planejada e **não constituem compromissos, prazos ou funcionalidades futuras**.
 
-Prioridade imediata: investigar motion blur/perda de nitidez durante movimento e texturas/materiais brancos ou ausentes. Não adicionar uma pilha de novos efeitos antes de existir baseline visual confiável.
+## Concluído como pesquisa/prova de conceito
 
-## Graphics Engine — em desenvolvimento
+- pipeline experimental DX9 → D3D11;
+- acesso ao depth buffer;
+- reconstrução de motion vectors;
+- transporte x86 → host x64 por componentes experimentais;
+- execução experimental de Neural Rendering;
+- validação Large Address Aware;
+- investigação de pressão de memória/texturas;
+- pesquisa de OmsiHook e possibilidades de telemetria runtime;
+- desenho da arquitetura híbrida x86/x64;
+- metodologia inicial de benchmark e testes.
 
-Pipeline visual, depth, motion vectors, motion clarity, efeitos próprios e integração temporal/neural. Pesquisa futura inclui tonemapping moderno, shader replacement e modernização de materiais.
+## Permaneceram em pesquisa ou planejamento
 
-## Runtime Bridge — em desenvolvimento
+- Graphics Engine próprio;
+- Runtime Bridge próprio;
+- Performance Engine;
+- Telemetry Engine;
+- Performance Controller;
+- Adaptive Quality;
+- Adaptive Mirrors;
+- Simulation Budget;
+- Loading & Streaming Manager;
+- Memory & Resource Manager;
+- Texture Budget Manager;
+- Asset & Texture Profiler;
+- Diagnostics;
+- Configurator;
+- backends adicionais AMD/Intel.
 
-Primeiro protótipo read-only para conectar o OMSI x86 à infraestrutura própria e registrar Timegap/frametime, mapa, tiles, veículos, humanos e memória.
+## Distribuição pública
 
-## Performance Engine — em desenvolvimento
+Não houve Alpha, Beta ou v1.0. Nenhum cronograma anterior permanece ativo.
 
-Target FPS/frametime, Telemetry Engine, Performance Controller, CPU/GPU/Simulation Budget, distância adaptativa, tráfego/pedestres e espelhos adaptativos.
+A documentação de escopo e cronograma foi mantida apenas como registro histórico do planejamento realizado durante o desenvolvimento.
 
-## Loading & Streaming — pesquisa ativa
-
-Evolução planejada: **observar → prever → influenciar**. A primeira etapa prioriza Tile Loading Telemetry e correlação de estados de loading com stutter.
-
-## External Memory & Cache — pesquisa
-
-Serviços x64 para cache, metadados, telemetria e processamento externo, sem prometer ampliar o limite interno do processo x86.
-
-## Diagnostics — planejado
-
-Verificação automatizada do pipeline, dependências, depth, motion vectors, host, backend neural, memória/address space e integridade de texturas.
-
-## Configurator — planejado
-
-Interface moderna para presets, recursos, diagnóstico e perfis de hardware.
-
-## Compatibilidade ampliada — futuro
-
-Backend NVIDIA é a frente atual; alternativas AMD e Intel serão estudadas posteriormente.
-
-## Distribuição pública — futuro
-
-Alpha somente após critérios mínimos de estabilidade, documentação, licenciamento, instalação reproduzível e um benchmark A/B confiável.
-
-## Sequência de engenharia
+## Princípio que orientou a pesquisa
 
 **Medir → entender → controlar → otimizar → modernizar.**
